@@ -22,7 +22,7 @@ def generate_frames():
 
 @app.route("/")
 def hello_world():
-    return "<p>jksdcvnhjksdfvh!</p>"
+    return render_template('index.html')
 
 
 @app.route('/video/61575d1c85fd1cc36010924b')
