@@ -11,6 +11,7 @@ def generate_frames():
         # read the camera frame
         success, frame = camera.read()
         if not success:
+            print("Not successfullll")
             break
         else:
             ret, buffer = cv2.imencode('.jpg', frame)
