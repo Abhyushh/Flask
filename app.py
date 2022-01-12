@@ -30,4 +30,5 @@ def video():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-app.run()
+if __name__ == "_main_":
+    app.run()
