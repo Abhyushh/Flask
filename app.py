@@ -6,6 +6,7 @@ camera = cv2.VideoCapture(0)
 
 
 def generate_frames():
+    # return "hello dataattaat"
     while True:
 
         # read the camera frame
@@ -27,7 +28,8 @@ def hello_world():
 
 @app.route('/video/61575d1c85fd1cc36010924b')
 def video():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return "jdghgfjhgfjsdgja"
+    # return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == "_main_":
