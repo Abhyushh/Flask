@@ -6,8 +6,8 @@ camera = cv2.VideoCapture(-1)
 
 
 def generate_frames():
+    return "heleifh"
     while True:
-
         # read the camera frame
         success, frame = camera.read()
         if not success:
