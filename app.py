@@ -4,7 +4,9 @@ import socket,cv2, pickle,struct
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 host_ip = '192.168.0.104' # Here Require CACHE Server IP
 port = 9999
-client_socket.connect((host_ip,port)) # a tuple
+bytes_data = client_socket.connect((host_ip,port)) # a tuple
+print("+++++++++++++++++++++++++++++++")
+print(bytes_data)
 data = b""
 payload_size = struct.calcsize("Q")
 while True:
@@ -21,7 +23,8 @@ while True:
 	frame_data = data[:msg_size]
 	data  = data[msg_size:]
 	frame = pickle.loads(frame_data)
-	cv2.imshow("RECEIVING VIDEO FROM CACHE SERVER",frame)
+	# cv2.imshow("RECEIVING VIDEO FROM CACHE SERVER",frame)
+	print(frame)
 	key = cv2.waitKey(1) & 0xFF
 	if key  == ord('q'):
 		break
