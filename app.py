@@ -1,34 +1,28 @@
-from flask import Flask, render_template, Response
-import cv2
+import socket,cv2, pickle,struct
 
-app = Flask(__name__)
-camera = cv2.VideoCapture(-1)
-
-
-def generate_frames():
-    return "heleifh"
-    while True:
-        # read the camera frame
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-
-        yield(b'--frame\r\n'
-              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-
-@app.route("/")
-def hello_world():
-    return render_template('index.html')
-
-
-@app.route('/video/61575d1c85fd1cc36010924b')
-def video():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-if __name__ == "__main__":
-    app.run()
+# create socket
+client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host_ip = '192.168.0.104' # Here Require CACHE Server IP
+port = 9999
+client_socket.connect((host_ip,port)) # a tuple
+data = b""
+payload_size = struct.calcsize("Q")
+while True:
+	while len(data) < payload_size:
+		packet = client_socket.recv(4*1024) # 4K
+		if not packet: break
+		data+=packet
+	packed_msg_size = data[:payload_size]
+	data = data[payload_size:]
+	msg_size = struct.unpack("Q",packed_msg_size)[0]
+	
+	while len(data) < msg_size:
+		data += client_socket.recv(4*1024)
+	frame_data = data[:msg_size]
+	data  = data[msg_size:]
+	frame = pickle.loads(frame_data)
+	cv2.imshow("RECEIVING VIDEO FROM CACHE SERVER",frame)
+	key = cv2.waitKey(1) & 0xFF
+	if key  == ord('q'):
+		break
+client_socket.close()
